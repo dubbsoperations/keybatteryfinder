@@ -1,9 +1,6 @@
-// KeyBatteryFinder - Main App JS
-const YT_CHANNEL = 'https://www.youtube.com/@KeyBatteryFinder';
 let vehicleIndex = null;
 let products = null;
 
-// Load data
 async function loadData() {
   const base = document.querySelector('meta[name="base-url"]')?.content || '';
   const [vi, pr] = await Promise.all([
@@ -12,10 +9,12 @@ async function loadData() {
   ]);
   vehicleIndex = vi;
   products = pr;
-  return { vehicleIndex, products };
 }
 
-// Populate make dropdown
+function makeSlug(text) {
+  return String(text).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function populateMakes(selectEl) {
   const makes = Object.keys(vehicleIndex).sort();
   selectEl.innerHTML = '<option value="">Select Make</option>';
@@ -27,7 +26,6 @@ function populateMakes(selectEl) {
   });
 }
 
-// Populate model dropdown based on make
 function populateModels(make, selectEl) {
   const models = Object.keys(vehicleIndex[make] || {}).sort();
   selectEl.innerHTML = '<option value="">Select Model</option>';
@@ -40,9 +38,8 @@ function populateModels(make, selectEl) {
   selectEl.disabled = false;
 }
 
-// Populate year dropdown based on make + model
 function populateYears(make, model, selectEl) {
-  const years = Object.keys(vehicleIndex[make]?.[model] || {}).sort((a,b) => b-a);
+  const years = Object.keys(vehicleIndex[make]?.[model] || {}).sort((a, b) => b - a);
   selectEl.innerHTML = '<option value="">Select Year</option>';
   years.forEach(year => {
     const opt = document.createElement('option');
@@ -53,18 +50,12 @@ function populateYears(make, model, selectEl) {
   selectEl.disabled = false;
 }
 
-// Get SKUs for make/model/year
-function getSKUs(make, model, year) {
-  return vehicleIndex[make]?.[model]?.[year] || [];
-}
-
-// Render product cards
 function renderCards(skus, container) {
   container.innerHTML = '';
   if (!skus.length) {
     container.innerHTML = `<div class="no-results">
       <h3>No key fobs found</h3>
-      <p>Try a different make, model, or year combination.</p>
+      <p>Try a different year or check the model name.</p>
     </div>`;
     return;
   }
@@ -77,21 +68,20 @@ function renderCards(skus, container) {
     card.className = 'product-card';
     card.href = `${base}/fob/${slug}.html`;
     card.innerHTML = `
-      <img class="card-image" src="${p.image}" alt="${p.title}" onerror="this.src='${base}/assets/img/no-image.png'" loading="lazy">
+      <div class="card-image-wrap">
+        <img src="${p.image_url}" alt="${p.original_title}" loading="lazy"
+          onerror="this.src='${base}/assets/img/placeholder.png'">
+      </div>
       <div class="card-body">
-        <div class="battery-badge">🔋 ${p.battery}</div>
-        <div class="card-title">${p.title}</div>
-        <div class="card-compat">${p.compatibility?.substring(0, 100) || ''}</div>
+        <span class="battery-badge">🔋 ${p.battery}</span>
+        <div class="card-title">${p.original_title}</div>
+        <div class="card-compat">${(p.compatibility_clean || '').substring(0, 100)}</div>
+        <div class="card-arrow">View details →</div>
       </div>`;
     container.appendChild(card);
   });
 }
 
-function makeSlug(text) {
-  return String(text).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
-// Search page init
 async function initSearch() {
   const makeEl = document.getElementById('sel-make');
   const modelEl = document.getElementById('sel-model');
@@ -108,15 +98,23 @@ async function initSearch() {
     yearEl.innerHTML = '<option value="">Select Year</option>';
     yearEl.disabled = true;
     btnEl.disabled = true;
-    if (makeEl.value) populateModels(makeEl.value, modelEl);
-    else modelEl.disabled = true;
+    if (makeEl.value) {
+      modelEl.disabled = false;
+      populateModels(makeEl.value, modelEl);
+    } else {
+      modelEl.disabled = true;
+    }
   });
 
   modelEl.addEventListener('change', () => {
     yearEl.innerHTML = '<option value="">Select Year</option>';
     btnEl.disabled = true;
-    if (modelEl.value) populateYears(makeEl.value, modelEl.value, yearEl);
-    else yearEl.disabled = true;
+    if (modelEl.value) {
+      yearEl.disabled = false;
+      populateYears(makeEl.value, modelEl.value, yearEl);
+    } else {
+      yearEl.disabled = true;
+    }
   });
 
   yearEl.addEventListener('change', () => {
@@ -129,20 +127,19 @@ async function initSearch() {
     const year = yearEl.value;
     if (!make || !model || !year) return;
 
-    const skus = getSKUs(make, model, year);
+    const skus = vehicleIndex[make]?.[model]?.[year] || [];
     resultsHeader.innerHTML = `
       <h2>${year} ${make} ${model} Key Fob Batteries</h2>
-      <p>Found ${skus.length} compatible key fob${skus.length !== 1 ? 's' : ''}</p>`;
+      <p>Found <strong>${skus.length}</strong> compatible key fob${skus.length !== 1 ? 's' : ''}</p>`;
     resultsEl.innerHTML = `<div class="loading"><div class="loading-spinner"></div>Loading results...</div>`;
-    setTimeout(() => renderCards(skus, resultsEl), 100);
+    setTimeout(() => renderCards(skus, resultsEl), 80);
 
-    // Update URL without reload
     const url = new URL(window.location);
     url.searchParams.set('make', make);
     url.searchParams.set('model', model);
     url.searchParams.set('year', year);
     window.history.pushState({}, '', url);
-    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('results-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   // Handle URL params on load

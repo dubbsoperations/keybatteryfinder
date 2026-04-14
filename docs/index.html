@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="base-url" content="">
   <title>Key Battery Finder – Find Your Key Fob Battery by Make, Model & Year</title>
-  <meta name="description" content="Find the exact battery for your car key fob. Search by make, model and year to get the right battery size instantly. Free, fast, accurate.">
+  <meta name="description" content="Find the exact battery for your car key fob instantly. Search by make, model and year. Free, fast and accurate.">
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Key Battery Finder">
-  <meta property="og:description" content="Find the exact battery for your car key fob instantly.">
-  <meta property="og:type" content="website">
 </head>
 <body>
 
@@ -19,33 +15,33 @@
     <a class="logo" href="/">Key<span>Battery</span>Finder</a>
     <nav>
       <a href="/">Home</a>
-      <a href="https://www.youtube.com/@KeyBatteryFinder" target="_blank">YouTube</a>
+      <a href="https://www.youtube.com/@KeyBatteryFinder" target="_blank" class="yt">▶ YouTube</a>
     </nav>
   </div>
 </header>
 
 <div class="stats-bar">
   <div class="stats-inner">
-    <span>🔋 <strong>9,700+</strong> Key Fobs</span>
-    <span>🚗 <strong>220+</strong> Car Makes</span>
-    <span>✅ <strong>Free</strong> to Use</span>
+    <span>🔋 <strong>6,000+</strong> Key Fobs</span>
+    <span>🚗 <strong>137</strong> Car Makes</span>
+    <span>✅ Always <strong>Free</strong></span>
   </div>
 </div>
 
 <section class="hero">
-  <h1>Find Your Key Fob <span>Battery</span><br>in Seconds</h1>
-  <p>Select your car's make, model and year — we'll show you the exact battery size</p>
+  <h1>Find Your Key Fob<br><span>Battery</span> in Seconds</h1>
+  <p>Select your car's make, model and year — we'll show you the exact battery you need</p>
 
   <div class="search-box">
     <h2>🔍 Search Your Vehicle</h2>
     <div class="search-row">
-      <select id="sel-make">
-        <option value="">Loading...</option>
+      <select id="sel-make" aria-label="Car Make">
+        <option value="">Loading makes...</option>
       </select>
-      <select id="sel-model" disabled>
+      <select id="sel-model" disabled aria-label="Car Model">
         <option value="">Select Model</option>
       </select>
-      <select id="sel-year" disabled>
+      <select id="sel-year" disabled aria-label="Year">
         <option value="">Select Year</option>
       </select>
     </div>
@@ -55,62 +51,62 @@
 
 <main>
   <div id="results-header" class="results-header"></div>
-  <div id="results"></div>
+  <div id="results" class="results-grid"></div>
 
   <!-- HOW IT WORKS -->
-  <section style="margin-top:64px;">
-    <h2 style="font-size:28px;font-weight:800;color:#1a1a2e;text-align:center;margin-bottom:8px;">How It Works</h2>
-    <p style="text-align:center;color:#666;margin-bottom:40px;">Get your battery in 3 simple steps</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;">
-      <div style="background:white;border-radius:16px;padding:32px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <div style="font-size:40px;margin-bottom:16px;">🚗</div>
-        <h3 style="font-weight:700;margin-bottom:8px;color:#1a1a2e;">1. Select Your Car</h3>
-        <p style="color:#666;font-size:14px;">Choose your car's make, model and year from the search above.</p>
+  <section class="how-section">
+    <h2>How It Works</h2>
+    <p class="sub">Get the right battery in 3 simple steps</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon">🚗</div>
+        <h3>1. Select Your Car</h3>
+        <p>Choose your car's make, model and year from the search above.</p>
       </div>
-      <div style="background:white;border-radius:16px;padding:32px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <div style="font-size:40px;margin-bottom:16px;">🔑</div>
-        <h3 style="font-weight:700;margin-bottom:8px;color:#1a1a2e;">2. Find Your Fob</h3>
-        <p style="color:#666;font-size:14px;">We show you all compatible key fobs with the exact battery size.</p>
+      <div class="how-card">
+        <div class="how-icon">🔑</div>
+        <h3>2. Find Your Fob</h3>
+        <p>We show all compatible key fobs with the exact battery size you need.</p>
       </div>
-      <div style="background:white;border-radius:16px;padding:32px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <div style="font-size:40px;margin-bottom:16px;">🔋</div>
-        <h3 style="font-weight:700;margin-bottom:8px;color:#1a1a2e;">3. Get Your Battery</h3>
-        <p style="color:#666;font-size:14px;">Click to buy the right battery on Amazon — delivered to your door.</p>
+      <div class="how-card">
+        <div class="how-icon">🔋</div>
+        <h3>3. Get Your Battery</h3>
+        <p>Click to buy the right battery on Amazon — fast delivery to your door.</p>
       </div>
     </div>
   </section>
 
   <!-- POPULAR MAKES -->
-  <section style="margin-top:64px;">
-    <h2 style="font-size:28px;font-weight:800;color:#1a1a2e;text-align:center;margin-bottom:32px;">Popular Car Makes</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;" id="popular-makes"></div>
+  <section class="makes-section">
+    <h2>Popular Car Makes</h2>
+    <div class="makes-grid" id="popular-makes"></div>
   </section>
 </main>
 
 <footer>
-  <p style="margin-bottom:12px;">
+  <a class="footer-logo" href="/">Key<span>Battery</span>Finder</a>
+  <p>
     <a href="/">Home</a> &nbsp;·&nbsp;
     <a href="https://www.youtube.com/@KeyBatteryFinder" target="_blank">YouTube</a>
   </p>
-  <p>© 2025 KeyBatteryFinder.com · This site contains affiliate links. As an Amazon Associate we earn from qualifying purchases.</p>
+  <p style="margin-top:16px;">© 2025 KeyBatteryFinder.com &nbsp;·&nbsp; This site contains affiliate links. As an Amazon Associate we earn from qualifying purchases.</p>
 </footer>
 
 <script src="assets/js/app.js"></script>
 <script>
-const POPULAR = ['Toyota','Honda','Ford','Chevrolet','Nissan','Dodge','Jeep','BMW','Mercedes-Benz','Hyundai','Kia','Subaru','Volkswagen','Audi','Lexus'];
+const POPULAR = ['Toyota','Honda','Ford','Chevrolet','Nissan','Dodge','Jeep','BMW','Mercedes-Benz','Hyundai','Kia','Subaru','Volkswagen','Audi','Lexus','Acura'];
 initSearch().then(() => {
   const el = document.getElementById('popular-makes');
   POPULAR.forEach(make => {
     if (!vehicleIndex[make]) return;
     const btn = document.createElement('button');
+    btn.className = 'make-btn';
     btn.textContent = make;
-    btn.style.cssText = 'padding:8px 18px;background:white;border:2px solid #e0e0e0;border-radius:20px;font-size:14px;cursor:pointer;transition:all 0.2s;font-weight:500;';
-    btn.onmouseover = () => { btn.style.borderColor='#e63946'; btn.style.color='#e63946'; };
-    btn.onmouseout = () => { btn.style.borderColor='#e0e0e0'; btn.style.color='#333'; };
     btn.onclick = () => {
-      document.getElementById('sel-make').value = make;
-      document.getElementById('sel-make').dispatchEvent(new Event('change'));
-      document.querySelector('.search-box').scrollIntoView({behavior:'smooth'});
+      const makeEl = document.getElementById('sel-make');
+      makeEl.value = make;
+      makeEl.dispatchEvent(new Event('change'));
+      document.querySelector('.search-box').scrollIntoView({ behavior: 'smooth' });
     };
     el.appendChild(btn);
   });
